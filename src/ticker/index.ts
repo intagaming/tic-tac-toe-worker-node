@@ -6,7 +6,7 @@ console.log("Starting...");
 
 (async () => {
   const schedule = (task: () => void) =>
-    setTimeout(task, ticker.sleepUntil.minus(DateTime.now()).toMillis());
+    setTimeout(task, ticker.sleepUntil.diffNow().toMillis());
   const tickTask = async () => {
     if (DateTime.now().toMillis() > ticker.sleepUntil.toMillis()) {
       // eslint-disable-next-line no-await-in-loop

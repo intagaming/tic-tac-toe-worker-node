@@ -75,10 +75,10 @@ const tick = async (roomId: string): Promise<boolean> => {
     return false;
   }
   const serverChannel = ably.channels.get(`server:${roomId}`);
-  
+
   // Check if the room is past gameEndsAt
   if (room.data.gameEndsAt !== -1) {
-    const gameEndsAt = DateTime.fromMillis(room.data.gameEndsAt);
+    const gameEndsAt = DateTime.fromSeconds(room.data.gameEndsAt);
     if (DateTime.now() > gameEndsAt) {
       // Ends the game
       // Reset the room state to waiting
@@ -89,16 +89,16 @@ const tick = async (roomId: string): Promise<boolean> => {
       room.data.turnEndsAt = -1;
       room.data.gameEndsAt = -1;
       saveRoomToRedis(room);
-      
+
       // Announce the game ended
       serverChannel.publish(Announcers.GameFinished, "");
       return false;
     }
     return true;
   }
-  
+
   // TODO: Turn timer
-  
+
   return true;
 };
 
@@ -118,10 +118,7 @@ export const tryTick = async () => {
     const unix = DateTime.fromMillis(parseInt(score, 10));
     if (DateTime.now() < unix) {
       // Sleep min(half a tick, time until the task is due)
-      if (
-        unix.minus(DateTime.now()).toSeconds() <
-        Options.tickTime.seconds / 2
-      ) {
+      if (unix.diffNow().seconds < Options.tickTime.seconds / 2) {
         // If the task is due soon
         if (ticker.idle) {
           idleOffWithSleepUntil(unix);
@@ -185,16 +182,16 @@ export const tryTick = async () => {
       await lock.release();
     }
 
-    const timeElapsed = DateTime.now().minus(startTime);
+    const timeElapsed = DateTime.now().diff(startTime);
     if (willTickMore && nextTickTime && DateTime.now() > nextTickTime) {
       console.log(`Room ${roomId} is late. Don't delay! Tick today.`);
       return;
     }
-    if (timeElapsed.toSeconds() < Options.tickTime.seconds / 2) {
+    if (timeElapsed.seconds < Options.tickTime.seconds / 2) {
       // We only do one ticking every half a tick, so we need to sleep for the remaining time
       ticker.sleepUntil = DateTime.now().plus(
         Duration.fromDurationLike({
-          seconds: Options.tickTime.seconds / 2 - timeElapsed.toSeconds(),
+          seconds: Options.tickTime.seconds / 2 - timeElapsed.seconds,
         })
       );
     }
