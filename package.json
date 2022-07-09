@@ -2,9 +2,12 @@
   "name": "tic-tac-toe-worker",
   "version": "1.0.0",
   "author": "An7",
-  "main": "index.js",
+  "main": "index.ts",
   "description": "Tic Tac Toe distributed realtime server",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.ts"
+  },
   "devDependencies": {
     "bun-types": "^0.1.2"
   }
