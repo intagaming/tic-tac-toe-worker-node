@@ -1,0 +1,11 @@
+{
+  "name": "tic-tac-toe-worker",
+  "version": "1.0.0",
+  "author": "An7",
+  "main": "index.js",
+  "description": "Tic Tac Toe distributed realtime server",
+  "license": "MIT",
+  "devDependencies": {
+    "bun-types": "^0.1.2"
+  }
+}
