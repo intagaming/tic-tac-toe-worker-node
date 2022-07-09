@@ -1,9 +1,9 @@
 import amqplib from "amqplib";
 import { DateTime } from "luxon";
-import ably from "./ably";
-import redis from "./redis";
-import { MessageMessage, PresenceMessage, Room } from "./types";
-import { getRoom, roomIdFromControlChannel, saveRoomToRedis } from "./utils";
+import ably from "../shared/ably";
+import redis from "../shared/redis";
+import { MessageMessage, PresenceMessage, Room } from "../shared/types";
+import { getRoom, roomIdFromControlChannel, saveRoomToRedis } from "../shared/utils";
 
 const roomTimeoutSeconds = 60;
 
