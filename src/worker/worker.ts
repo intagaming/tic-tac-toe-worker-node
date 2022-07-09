@@ -7,7 +7,7 @@ import { getRoom, roomIdFromControlChannel, saveRoomToRedis } from "../shared/ut
 
 const roomTimeoutSeconds = 60;
 
-enum Announcers {
+export enum Announcers {
   HostChange = "HOST_CHANCE",
   RoomState = "ROOM_STATE",
   GameStartsNow = "GAME_STARTS_NOW",
