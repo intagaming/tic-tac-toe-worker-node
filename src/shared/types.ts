@@ -11,9 +11,7 @@ type Presence = {
   clientId: string;
   connectionId: string;
   timestamp: number;
-  name: string;
   action: number;
-  data: string;
 };
 
 export interface PresenceMessage extends QueueMessage {

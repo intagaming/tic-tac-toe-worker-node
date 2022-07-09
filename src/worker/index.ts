@@ -14,7 +14,6 @@ const amqpUrl = process.env.AMQP_URL ?? "";
   const ch1 = await conn.createChannel();
   console.log("Opened a channel on the Ably queue connection");
 
-  await ch1.assertQueue(ablyQueueName);
   console.log("Listening for messages on queue");
   ch1.consume(ablyQueueName, (msg) => {
     if (msg !== null) {

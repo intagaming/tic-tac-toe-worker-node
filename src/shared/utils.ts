@@ -14,8 +14,11 @@ export const roomIdFromControlChannel = (channel: string): string =>
   channel.replace("control:", "");
 
 export const saveRoomToRedis = (room: Room, expiration?: number) => {
-  if (expiration !== undefined) {
-    return redis.set(`room:${room.id}`, JSON.stringify(room), "EX", expiration);
+  if (expiration === undefined) {
+    return redis.set(`room:${room.id}`, JSON.stringify(room), "KEEPTTL");
   }
-  return redis.set(`room:${room.id}`, JSON.stringify(room));
+  if (expiration === 0) {
+    return redis.set(`room:${room.id}`, JSON.stringify(room));
+  }
+  return redis.set(`room:${room.id}`, JSON.stringify(room), "EX", expiration);
 };

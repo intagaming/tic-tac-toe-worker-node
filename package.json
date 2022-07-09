@@ -2,11 +2,10 @@
   "name": "tic-tac-toe-worker",
   "version": "1.0.0",
   "author": "An7",
-  "main": "index.ts",
   "description": "Tic Tac Toe distributed realtime server",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start:worker": "tsc && node dist/worker/index.js",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {

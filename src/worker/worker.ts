@@ -43,7 +43,7 @@ const onControlChannelEnter = async (presenceMsg: PresenceMessage) => {
     // Save, and persist the room
     await saveRoomToRedis(room, 0);
     // Persist the client's roomId
-    await redis.set(`client:${clientId}`, roomId, "EX", 0);
+    await redis.set(`client:${clientId}`, roomId);
 
     // Send the room state
     serverChannel.publish(Announcers.RoomState, JSON.stringify(room));
@@ -53,14 +53,14 @@ const onControlChannelEnter = async (presenceMsg: PresenceMessage) => {
     // Save, and persist the room
     await saveRoomToRedis(room, 0);
     // Persist the client's roomId
-    await redis.set(`client:${clientId}`, roomId, "EX", 0);
+    await redis.set(`client:${clientId}`, roomId);
 
     // Send the room state
     serverChannel.publish(Announcers.RoomState, JSON.stringify(room));
   } else if (room.host === clientId || room.guest === clientId) {
     // If re-joining
     // Persist the client's roomId
-    redis.set(`client:${clientId}`, roomId, "EX", 0);
+    redis.set(`client:${clientId}`, roomId);
     // Persist the room
     redis.persist(`room:${roomId}`);
   }
@@ -71,7 +71,7 @@ const onControlChannelEnter = async (presenceMsg: PresenceMessage) => {
 
 const onEnter = (presenceMsg: PresenceMessage) => {
   const presence = presenceMsg.presence[0];
-  console.log(`${presence.name} entered channel ${presenceMsg.channel}`);
+  console.log(`${presence.clientId} entered channel ${presenceMsg.channel}`);
 
   const { channel } = presenceMsg;
   if (channel.startsWith("control:")) {
@@ -126,7 +126,7 @@ const onControlChannelLeave = async (presenceMsg: PresenceMessage) => {
 
 const onLeave = (presenceMsg: PresenceMessage) => {
   const presence = presenceMsg.presence[0];
-  console.log(`${presence.name} left channel ${presenceMsg.channel}`);
+  console.log(`${presence.clientId} left channel ${presenceMsg.channel}`);
 
   const { channel } = presenceMsg;
   if (channel.startsWith("control:")) {
@@ -385,6 +385,7 @@ const handleMessage = (messageMsg: MessageMessage) => {
 
 const handle = (payload: amqplib.ConsumeMessage) => {
   const payloadString = payload.content.toString();
+  console.log(payloadString);
   if (payloadString.includes("channel.presence")) {
     const msg = JSON.parse(payloadString) as PresenceMessage;
     handlePresence(msg);
