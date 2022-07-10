@@ -5,9 +5,12 @@
   "description": "Tic Tac Toe distributed realtime server",
   "license": "MIT",
   "scripts": {
-    "start:worker": "tsc && node dist/worker/index.js",
-    "start:ticker": "tsc && node dist/ticker/index.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "build": "tsc",
+    "start:worker": "node dist/worker/index.js",
+    "start:ticker": "node dist/ticker/index.js",
+    "dev:worker": "yarn build && node dist/worker/index.js",
+    "dev:ticker": "yarn build && node dist/ticker/index.js"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
