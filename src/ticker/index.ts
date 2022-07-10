@@ -15,4 +15,5 @@ console.log("Starting...");
     schedule(tickTask);
   };
   schedule(tickTask);
+  console.log("Ticker started");
 })();

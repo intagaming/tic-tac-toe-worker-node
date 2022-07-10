@@ -368,11 +368,6 @@ const onControlChannelMessage = async (messageMsg: MessageMessage) => {
 };
 
 const onMessage = (messageMsg: MessageMessage) => {
-  const msg = messageMsg.messages[0];
-  console.log(
-    `${msg.clientId} sent message ${msg} on channel ${messageMsg.channel}`
-  );
-
   const { channel } = messageMsg;
   if (channel.startsWith("control:")) {
     onControlChannelMessage(messageMsg);
@@ -385,7 +380,6 @@ const handleMessage = (messageMsg: MessageMessage) => {
 
 const handle = (payload: amqplib.ConsumeMessage) => {
   const payloadString = payload.content.toString();
-  console.log(payloadString);
   if (payloadString.includes("channel.presence")) {
     const msg = JSON.parse(payloadString) as PresenceMessage;
     handlePresence(msg);
