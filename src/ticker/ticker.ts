@@ -146,7 +146,6 @@ export const tryTick = async () => {
       lock = await redlock.acquire([mutexName], 5000);
     } catch (_) {
       // Try again
-      console.log("Retrying");
       // eslint-disable-next-line no-continue
       continue;
     }
