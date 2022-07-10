@@ -33,8 +33,8 @@ export const ticker: Ticker = {
 export const redlock = new Redlock([redis], {
   driftFactor: 0.01,
   retryCount: 0,
-  retryDelay: 200,
-  retryJitter: 200,
+  retryDelay: 0,
+  retryJitter: 0,
   automaticExtensionThreshold: 500,
 });
 
@@ -141,7 +141,15 @@ export const tryTick = async () => {
 
     // Try to acquire lock on the room
     const mutexName = `tick:${roomId}`;
-    const lock = await redlock.acquire([mutexName], 5000);
+    let lock;
+    try {
+      lock = await redlock.acquire([mutexName], 5000);
+    } catch (_) {
+      // Try again
+      console.log("Retrying");
+      // eslint-disable-next-line no-continue
+      continue;
+    }
 
     let willTickMore: boolean | undefined; // TODO: is this default sensible?
     let nextTickTime: DateTime | undefined;
