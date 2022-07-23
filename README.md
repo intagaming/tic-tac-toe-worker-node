@@ -1,5 +1,7 @@
 # tic-tac-toe-worker-node
 
+> Note: I switched back to using Go due to (possibly) performance and memory footprint.
+
 tic-tac-toe-worker-node is the "authoritative server" for the [tic-tac-toe][1]
 game. This server is made to be a **distributed server**, which means if there
 are 100 of these running, all the works that the client requests will be evenly
